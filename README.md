@@ -15,6 +15,8 @@ Examples can be found in the `examples` directory. To run the `abb_irb2400_viewe
 
 Now point a web browser to `http://localhost:8000`
 
+A pregenerated scene can be found here: https://johnwason.github.io/tesseract_viewer_python_example1/ This URL will display the robot trajectory animation in a web browser without installing any files.
+
 ## Oculus Quest
 
 Thanks to the WebVR/WebXR support in Babylon.js, the viewer can be used with VR headsets including Oculus Quest. Using the [Firefox Reality](https://www.oculus.com/experiences/quest/2180252408763702/?locale=en_US) browser on the Oculus Quest, navigate to the viewer address. An example address would be `http://192.168.1.22:8000`. Substite 192.168.1.22 for your computer's IP address. Once on the viewer page, a goggles symbol should be visible on the lower right of the page. Clock the goggle symbol to enter VR.
