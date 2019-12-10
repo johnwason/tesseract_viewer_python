@@ -41,7 +41,8 @@ t.init(abb_irb2400_urdf, abb_irb2400_srdf, TesseractSupportResourceLocator())
 t_env = t.getEnvironment()
 
 viewer = TesseractViewer()
-viewer.update_environment(t_env)
+
+viewer.update_environment(t_env, [0,0,0])
 
 joint_names = ["joint_%d" % (i+1) for i in range(6)]
 viewer.update_joint_positions(joint_names, np.array([1,-.2,.01,.3,-.5,1]))
@@ -137,7 +138,7 @@ print(planner_response)
 
 print(planner_response.joint_trajectory.trajectory)
 
-viewer.update_trajectory(planner_response.joint_trajectory)
+viewer.update_trajectory(planner_response.joint_trajectory, 5)
 
 
 # babylon_text = tesseract_env_to_babylon_json(t_env)

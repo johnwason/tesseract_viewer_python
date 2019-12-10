@@ -40,7 +40,7 @@ class TesseractViewer {
         // Add lights to the scene
         this._light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -1, 0), this._scene);
                     
-        this._root = new BABYLON.TransformNode("root");
+        this._root = new BABYLON.TransformNode("root0");
         
         this._root.rotation.x = -1.5707963267948966;
 
@@ -231,6 +231,7 @@ class JointTrajectoryAnimation
 {
     private _joint_names : string[];
     private _use_time: boolean;
+    private _loop_time: number;
     private _trajectory: number[][];
 
     private _scene: BABYLON.Scene;
@@ -243,7 +244,7 @@ class JointTrajectoryAnimation
     private _timerid = 0;
 
     public constructor(scene: BABYLON.Scene, joint_names: string[], 
-        trajectory: number[][], use_time: boolean)
+        trajectory: number[][], use_time: boolean, loop_time: number)
     {
         if (joint_names.length == 0)
         {
@@ -283,6 +284,7 @@ class JointTrajectoryAnimation
         this._joint_names = joint_names;
         this._trajectory = trajectory;
         this._use_time = use_time;
+        this._loop_time = loop_time;
         this._scene = scene;
         this.findJoints();
     }
@@ -327,7 +329,7 @@ class JointTrajectoryAnimation
         }
         else
         {
-            return this._trajectory.length;
+            return this._loop_time;
         }
     }
 
@@ -345,7 +347,7 @@ class JointTrajectoryAnimation
             }
             else
             {
-                times.push(i);
+                times.push(i*(this._loop_time/n));
             }
         }
 
@@ -430,7 +432,7 @@ class JointTrajectoryAnimation
     {
         let trajectory = new JointTrajectoryAnimation(scene, 
             parsedTrajectory.joint_names, parsedTrajectory.trajectory,
-            parsedTrajectory.use_time);
+            parsedTrajectory.use_time, parsedTrajectory.loop_time);
 
         return trajectory;
     }

@@ -30,7 +30,7 @@ class TesseractViewer {
             this._camera.setPosition(new BABYLON.Vector3(2.5, 1.5, -1));
             // Add lights to the scene
             this._light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -1, 0), this._scene);
-            this._root = new BABYLON.TransformNode("root");
+            this._root = new BABYLON.TransformNode("root0");
             this._root.rotation.x = -1.5707963267948966;
             yield this.updateScene();
             console.log("Loaded!");
@@ -178,7 +178,7 @@ class TesseractViewer {
     }
 }
 class JointTrajectoryAnimation {
-    constructor(scene, joint_names, trajectory, use_time) {
+    constructor(scene, joint_names, trajectory, use_time, loop_time) {
         this._timerid = 0;
         if (joint_names.length == 0) {
             throw new Error("joint_names must not be zero count");
@@ -207,6 +207,7 @@ class JointTrajectoryAnimation {
         this._joint_names = joint_names;
         this._trajectory = trajectory;
         this._use_time = use_time;
+        this._loop_time = loop_time;
         this._scene = scene;
         this.findJoints();
     }
@@ -240,7 +241,7 @@ class JointTrajectoryAnimation {
             return this._max_time;
         }
         else {
-            return this._trajectory.length;
+            return this._loop_time;
         }
     }
     setTrajectoryTime(t) {
@@ -252,7 +253,7 @@ class JointTrajectoryAnimation {
                 times.push(this._trajectory[i][joint_n]);
             }
             else {
-                times.push(i);
+                times.push(i * (this._loop_time / n));
             }
         }
         let joint_pos = null;
@@ -311,7 +312,7 @@ class JointTrajectoryAnimation {
         this.setTrajectoryTime(t);
     }
     static Parse(parsedTrajectory, scene) {
-        let trajectory = new JointTrajectoryAnimation(scene, parsedTrajectory.joint_names, parsedTrajectory.trajectory, parsedTrajectory.use_time);
+        let trajectory = new JointTrajectoryAnimation(scene, parsedTrajectory.joint_names, parsedTrajectory.trajectory, parsedTrajectory.use_time, parsedTrajectory.loop_time);
         return trajectory;
     }
 }

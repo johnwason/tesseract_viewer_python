@@ -3,10 +3,12 @@ import numpy as np
 import math
 import tesseract
 
-def tesseract_env_to_babylon_json(t_env):
-    return json.dumps(tesseract_env_to_babylon_json_dict(t_env))
+def tesseract_env_to_babylon_json(t_env, origin_offset=[0,0,0]):
+    return json.dumps(tesseract_env_to_babylon_json_dict(t_env,origin_offset))
 
-def tesseract_env_to_babylon_json_dict(t_env):
+def tesseract_env_to_babylon_json_dict(t_env, origin_offset=[0,0,0]):
+
+    assert len(list(origin_offset)) == 3
 
     link_names = t_env.getLinkNames()
     joint_names = t_env.getJointNames()
@@ -22,6 +24,8 @@ def tesseract_env_to_babylon_json_dict(t_env):
     root_link_name = t_env.getRootLinkName()
 
     transform_nodes, meshes, materials = _process_link_recursive(link_map, joint_map, root_link_name, None)
+
+    transform_nodes.append({"name": "root", "id": "root", "isVisible": "true", "isEnabled": "true", "position": list(origin_offset), "parentId": "root0"})
 
     babylon_dict = {"transformNodes": transform_nodes, "meshes": meshes, "materials": materials}
     return babylon_dict

@@ -103,11 +103,11 @@ class TesseractViewer():
         self._httpd = HTTPServer(server_address,_TesseractViewerRequestHandler)
         setattr(self._httpd,"viewer",self)   
 
-    def update_environment(self, tesseract_env):
+    def update_environment(self, tesseract_env, origin_offset = [0,0,0]):
 
         assert isinstance(tesseract_env, tesseract.Environment)
         with self._lock:
-            self.scene_json = tesseract_env_to_babylon_json(tesseract_env)
+            self.scene_json = tesseract_env_to_babylon_json(tesseract_env, origin_offset)
 
     def update_joint_positions(self, joint_names, joint_positions):
         # Create "infinite" animation with constant joint angles
@@ -125,11 +125,12 @@ class TesseractViewer():
 
         self.trajectory_json=json.dumps(trajectory_json)
 
-    def update_trajectory(self, tesseract_trajectory, use_time = False):
+    def update_trajectory(self, tesseract_trajectory, use_time = False, loop_time = 5):
         # Create "infinite" animation with constant joint angles
 
         trajectory_json = dict()
         trajectory_json["use_time"] = use_time
+        trajectory_json["loop_time"] = loop_time
         trajectory_json["joint_names"] = list(tesseract_trajectory.joint_names)
         
         trajectory2 = []
