@@ -1,0 +1,1 @@
+tesseract_viewer_python has been merged into https://github.com/ros-industrial-consortium/tesseract
